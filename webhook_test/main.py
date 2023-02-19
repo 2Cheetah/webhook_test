@@ -1,13 +1,6 @@
 import requests
 import os
 
-chatforma_api_key = os.getenv('CHATFORMA_API_KEY')
-
-url_check_auth = "https://api.pro.chatforma.com/public/v1/auth-test"
-url_get_bots = "https://api.pro.chatforma.com/public/v1/bots"
-url_get_forms = "https://api.pro.chatforma.com/public/v1/forms"
-url_get_notification_sample = "https://api.pro.chatforma.com/public/v1/notification-sample"
-
 
 class Bots:
     def __init__(self, api_key):
@@ -87,21 +80,72 @@ class Notifications(Forms):
         print(response.json())
 
 
+class Message(Forms):
+    def __init__(self, api_key, botId):
+        self.botId = botId
+        self.url = f"https://api.pro.chatforma.com/public/v1/bots/{self.botId}/messages"
+        self.headers = {
+            "accept": "application/json",
+            "api_key": api_key,
+        }
+
+    def send_message(self, userId, message):
+        url = f"https://api.pro.chatforma.com/public/v1/bots/{self.botId}/dialogs/{userId}/message"
+        message_data = {
+            "uid": userId,
+            "message": message,
+        }
+        
+        response = requests.post(
+            url,
+            headers=self.headers,
+            data=message_data,
+        )
+
+        print(response)
+        print(response.json)
+
+
+class User(Forms):
+    def __init__(self, api_key, botId):
+        self.url = f"https://api.pro.chatforma.com/public/v1/bots/{botId}/users"
+        self.headers = {
+            "accept": "application/json",
+            "api_key": api_key,
+        }
+
 
 if __name__ == "__main__":
     api_key = os.getenv("CHATFORMA_API_KEY")
-    bots = Bots(api_key)
-    bots.get_data()
-    
-    forms = Forms(api_key, '124442')
-    forms.get_data()
-    
-    notification_sample = NotificationSample(api_key, '124442', 'iqepgkqtlm')
-    notification_sample.get_data()
 
-    notification = Notifications(api_key, '124442')
-#    notification.subscribe('iqepgkqtlm', 'https://gunicorn-test.onrender.com/test')
-
-#    notification.unsubscribe("37263")
+#     print("Fetching list of Bots...")
+#     bots = Bots(api_key)
+#     bots.get_data()
     
-    notification.get_notifications_list("iqepgkqtlm")
+#     print("\nFetching list of Forms...")
+#     forms = Forms(api_key, '124442')
+#     forms.get_data()
+    
+#     print("\nNotification sample:")
+#     notification_sample = NotificationSample(api_key, '124442', 'iqepgkqtlm')
+#     notification_sample.get_data()
+
+#     print("\nFetching list of notification subscriptions:")
+#     notification = Notifications(api_key, '124442')
+# #    notification.subscribe('iqepgkqtlm', 'https://gunicorn-test.onrender.com/test')
+
+# #    notification.unsubscribe("37263")
+    
+#     notification.get_notifications_list("iqepgkqtlm")
+
+    print("\nFetching list of messages from bot...")
+    messages = Message(api_key, '124442')
+    messages.get_data()
+
+    print("\nFetching list of Bot users...")
+    user = User(api_key, botId='124442')
+    user.get_data()
+
+    message = "Test message to a user"
+    print("\nSending message...")
+    messages.send_message(userId=51884226, message=message)
