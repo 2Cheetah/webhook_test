@@ -103,7 +103,7 @@ class Message(Forms):
         )
 
         print(response)
-        print(response.json)
+        # print(response.json)
 
 
 class User(Forms):
@@ -130,22 +130,23 @@ if __name__ == "__main__":
 #     notification_sample = NotificationSample(api_key, '124442', 'iqepgkqtlm')
 #     notification_sample.get_data()
 
-#     print("\nFetching list of notification subscriptions:")
-#     notification = Notifications(api_key, '124442')
-# #    notification.subscribe('iqepgkqtlm', 'https://gunicorn-test.onrender.com/test')
+    print("\nFetching list of notification subscriptions:")
+    notification = Notifications(api_key, '124442')
+#    notification.subscribe('iqepgkqtlm', 'https://gunicorn-test.onrender.com/test')
 
-# #    notification.unsubscribe("37263")
+    print("Unsubscribing from notifications...")
+    notification.unsubscribe(37265)
     
-#     notification.get_notifications_list("iqepgkqtlm")
+    notification.get_notifications_list("iqepgkqtlm")
 
-    print("\nFetching list of messages from bot...")
-    messages = Message(api_key, '124442')
-    messages.get_data()
+    # print("\nFetching list of messages from bot...")
+    # messages = Message(api_key, '124442')
+    # messages.get_data()
 
-    print("\nFetching list of Bot users...")
-    user = User(api_key, botId='124442')
-    user.get_data()
+    # print("\nFetching list of Bot users...")
+    # user = User(api_key, botId='124442')
+    # user.get_data()
 
-    message = "Test message to a user"
-    print("\nSending message...")
-    messages.send_message(userId=51884226, message=message)
+    # message = "Test message to a user"
+    # print("\nSending message...")
+    # messages.send_message(userId=51884226, message=message)
